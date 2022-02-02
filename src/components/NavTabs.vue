@@ -29,7 +29,7 @@ export default {
                 },
                 {
                     id: uuid(),
-                    title: ':TOP 10 人氣餐廳',
+                    title: 'TOP 10 人氣餐廳',
                     path: '/restaurants/top'
                 },
                 {

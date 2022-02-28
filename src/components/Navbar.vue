@@ -36,7 +36,7 @@
         <!-- is user is login -->
         <template v-if="isAuthenticated">
           <router-link
-             to="#" 
+             :to="{ name: 'user', params: { id: currentUser.id}}" 
              class="text-white mr-3"
           > 
            {{ this.currentUser.name || '使用者' }} 您好
@@ -82,7 +82,7 @@ export default {
         fetchUser() {
             this.currentUser = {
                 ...this.currentUser,
-                ...dummyUser
+                ...dummyUser.currentUser
             }
         }
     },

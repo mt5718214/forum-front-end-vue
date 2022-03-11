@@ -44,9 +44,12 @@
             </button>
           </template>
           <template v-else>
-            <button type="submit" class="btn btn-primary" @click="addFollow">
+            <router-link
+              :to="{ name: 'user-edit', params: { id: user.id } }"
+              class="btn btn-primary"
+            >
               編輯
-            </button>
+            </router-link>
           </template>
           <p></p>
         </div>
@@ -59,7 +62,7 @@
 import { emptyImageFilter } from "../utils/mixins";
 const dummyUser = {
   currentUser: {
-    id: 100,
+    id: 1,
     name: "test",
     email: "test@1234",
     image: "",

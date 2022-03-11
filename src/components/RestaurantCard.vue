@@ -3,20 +3,24 @@
     <div class="card mb-4">
       <img
         class="card-img-top"
-        :src="restaurant.image"
+        :src="restaurant.image | emptyImage"
         alt="Card image cap"
         width="286px"
         height="180px"
-      >
+      />
       <div class="card-body">
         <p class="card-text title-wrap">
-          <router-link :to="{ name: 'restaurant', params: { id: restaurant.id }}">
-            {{restaurant.name}}
+          <router-link
+            :to="{ name: 'restaurant', params: { id: restaurant.id } }"
+          >
+            {{ restaurant.name }}
           </router-link>
         </p>
-        <span class="badge badge-secondary">{{restaurant.Category.name}}</span>
+        <span class="badge badge-secondary">{{
+          restaurant.Category.name
+        }}</span>
         <p class="card-text text-truncate">
-          {{restaurant.description}}
+          {{ restaurant.description }}
         </p>
       </div>
       <div class="card-footer">
@@ -58,43 +62,45 @@
 </template>
 
 <script>
+import { emptyImageFilter } from "../utils/mixins";
 export default {
-    props: {
-        initialRestaurant: {
-            type: Object,
-            required: true
-        }
+  props: {
+    initialRestaurant: {
+      type: Object,
+      required: true,
     },
-    data() {
-        return {
-            restaurant: this.initialRestaurant
-        }
+  },
+  mixins: [emptyImageFilter],
+  data() {
+    return {
+      restaurant: this.initialRestaurant,
+    };
+  },
+  methods: {
+    addFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: true,
+      };
     },
-    methods: {
-        addFavorite() {
-            this.restaurant = {
-                ...this.restaurant,
-                isFavorited: true
-            }
-        },
-        deleteFavorite() {
-            this.restaurant = {
-                ...this.restaurant,
-                isFavorited: false
-            }
-        },
-        addLike() {
-            this.restaurant = {
-                ...this.restaurant,
-                isLiked: true
-            }
-        },
-        deleteLike() {
-            this.restaurant = {
-                ...this.restaurant,
-                isLiked: false
-            }
-        }
-    }
-}
+    deleteFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: false,
+      };
+    },
+    addLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: true,
+      };
+    },
+    deleteLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: false,
+      };
+    },
+  },
+};
 </script>

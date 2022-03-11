@@ -8,10 +8,10 @@
     </div>
     <div class="col-lg-4">
       <img
-        class="img-responsive center-block" 
-    :src="restaurant.image"
-        style="width: 250px;margin-bottom: 25px;"
-      >
+        class="img-responsive center-block"
+        :src="restaurant.image | emptyImage"
+        style="width: 250px; margin-bottom: 25px"
+      />
       <div class="contact-info-wrap">
         <ul class="list-unstyled">
           <li>
@@ -34,7 +34,8 @@
       <router-link
         class="btn btn-primary btn-border mr-2"
         :to="{ name: 'restaurantDashboard', params: { id: restaurant.id } }"
-      >Dashboard</router-link>
+        >Dashboard</router-link
+      >
 
       <button
         type="button"
@@ -73,43 +74,45 @@
 </template>
 
 <script>
+import { emptyImageFilter } from "../utils/mixins";
 export default {
-    props: {
-        initialRestaurant: {
-            type: Object,
-            required: true
-        }
+  props: {
+    initialRestaurant: {
+      type: Object,
+      required: true,
     },
-    data() {
-        return {
-            restaurant: this.initialRestaurant
-        }
+  },
+  mixins: [emptyImageFilter],
+  data() {
+    return {
+      restaurant: this.initialRestaurant,
+    };
+  },
+  methods: {
+    addFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: true,
+      };
     },
-    methods: {
-        addFavorite() {
-            this.restaurant = {
-                ...this.restaurant,
-                isFavorited: true
-            }
-        },
-        deleteFavorite() {
-            this.restaurant = {
-                ...this.restaurant,
-                isFavorited: false
-            }
-        },
-        addLike() {
-            this.restaurant = {
-                ...this.restaurant,
-                isLiked: true
-            }
-        },
-        deleteLike() {
-            this.restaurant = {
-                ...this.restaurant,
-                isLiked: false
-            }
-        }
-    }
-}
+    deleteFavorite() {
+      this.restaurant = {
+        ...this.restaurant,
+        isFavorited: false,
+      };
+    },
+    addLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: true,
+      };
+    },
+    deleteLike() {
+      this.restaurant = {
+        ...this.restaurant,
+        isLiked: false,
+      };
+    },
+  },
+};
 </script>

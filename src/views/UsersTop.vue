@@ -13,10 +13,22 @@
           >追蹤人數：{{ user.FollowerCount }}</span
         >
         <p class="mt-3">
-          <button v-if="isFollowed" type="button" class="btn btn-danger">
+          <button
+            v-if="user.isFollowed"
+            type="button"
+            class="btn btn-danger"
+            @click.stop.prevent="deleteFollowings(user.id)"
+          >
             取消追蹤
           </button>
-          <button v-else type="button" class="btn btn-primary">追蹤</button>
+          <button
+            v-else
+            type="button"
+            class="btn btn-primary"
+            @click.stop.prevent="addFollowings(user.id)"
+          >
+            追蹤
+          </button>
         </p>
       </div>
     </div>
@@ -26,49 +38,8 @@
 <script>
 import NavTabs from "../components/NavTabs.vue";
 import { emptyImageFilter } from "../utils/mixins";
-const dummyUser = {
-  users: [
-    {
-      id: 1,
-      name: "root",
-      email: "root@example.com",
-      password: "$2a$10$Uim7q15P7OVma61/ExL/heqfoFPmwkln1zZI0WP6CWcdcTKZ8YYfK",
-      isAdmin: true,
-      image: null,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-    {
-      id: 2,
-      name: "user1",
-      email: "user1@example.com",
-      password: "$2a$10$XhQPgnmozqTFXVzWJkv//.SypTpxxFho7AldEuVA29Vw61m9/Q4KK",
-      isAdmin: false,
-      image: null,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-    {
-      id: 3,
-      name: "user2",
-      email: "user2@example.com",
-      password: "$2a$10$1kmMuIhz9Iv5eYOUIZFLx.D5fzu1gn8khoDlrq5lgJyHcuicGq4AG",
-      isAdmin: false,
-      image: null,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-  ],
-};
+import usersAPI from "../api/users";
+import { Toast } from "../utils/helpers";
 
 export default {
   components: {
@@ -81,8 +52,65 @@ export default {
   },
   mixins: [emptyImageFilter],
   methods: {
-    fetchUser() {
-      this.users = dummyUser.users;
+    async fetchUser() {
+      try {
+        const { data } = await usersAPI.getTopUsers();
+        this.users = data.users;
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得美食達人，請稍後再試",
+        });
+      }
+    },
+    async addFollowings(userId) {
+      try {
+        const { data } = await usersAPI.addFollowing({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        this.users = this.users.map((user) => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              isFollowed: true,
+            };
+          }
+          return user;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法加入追蹤，請稍後再試",
+        });
+      }
+    },
+    async deleteFollowings(userId) {
+      try {
+        const { data } = await usersAPI.deleteFollowing({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        this.users = this.users.map((user) => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              isFollowed: false,
+            };
+          }
+          return user;
+        });
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取消追蹤，請稍後再試",
+        });
+      }
     },
   },
   created() {

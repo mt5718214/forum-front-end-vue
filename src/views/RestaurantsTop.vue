@@ -60,181 +60,8 @@
 <script>
 import NavTabs from "../components/NavTabs.vue";
 import { emptyImageFilter } from "../utils/mixins";
-
-const dummyData = {
-  restaurants: [
-    {
-      id: 50,
-      name: "Rahsaan Mohr",
-      tel: "027.742.2828 x2771",
-      address: "035 Emil Place",
-      opening_hours: "08:00",
-      description: "Ipsam totam nesciunt corrupti.",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=73.14353949661196",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 5,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 1,
-    },
-    {
-      id: 49,
-      name: "Walton Stokes",
-      tel: "(087) 213-6412 x168",
-      address: "4996 Justus Underpass",
-      opening_hours: "08:00",
-      description: "Nam ut praesentium repudiandae aut praesentium sim",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=79.68796131341065",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 4,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 48,
-      name: "Richmond Kautzer",
-      tel: "673-534-0606 x2015",
-      address: "698 Audra Turnpike",
-      opening_hours: "08:00",
-      description: "Quia tenetur assumenda quia et consequatur iure at",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=74.37491286216071",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 4,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 47,
-      name: "Thora Willms",
-      tel: "606-257-5891",
-      address: "529 Luna Hills",
-      opening_hours: "08:00",
-      description: "Sit nulla sit officiis enim consequuntur ad non pr",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=6.1942059124344695",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 2,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 46,
-      name: "Angela Batz",
-      tel: "423-142-5230 x356",
-      address: "7663 Terence Passage",
-      opening_hours: "08:00",
-      description: "et",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=74.35582646999626",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 1,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 45,
-      name: "Johnpaul Willms",
-      tel: "(782) 243-1904 x8098",
-      address: "3042 Strosin Expressway",
-      opening_hours: "08:00",
-      description: "dolor",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=25.836601445917772",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 1,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 44,
-      name: "Theodora Veum",
-      tel: "1-343-661-6962 x5723",
-      address: "9853 Zemlak Islands",
-      opening_hours: "08:00",
-      description: "Similique odit maxime maxime ea cum nam aperiam.",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=68.07841385771425",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 5,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 43,
-      name: "Selena Bartell",
-      tel: "623.972.5896",
-      address: "68711 Ryan Squares",
-      opening_hours: "08:00",
-      description: "minus et sed",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=16.68556701850603",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 4,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 42,
-      name: "Dasia Schroeder",
-      tel: "755.136.9321 x320",
-      address: "188 Homenick Glens",
-      opening_hours: "08:00",
-      description: "qui quisquam illum",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=10.24951056182628",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 5,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-    {
-      id: 41,
-      name: "Camilla D'Amore Sr.",
-      tel: "1-476-120-3479",
-      address: "06857 Harris Coves",
-      opening_hours: "08:00",
-      description: "fugit similique ipsa",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=38.291757009523494",
-      viewCounts: 0,
-      createdAt: "2022-01-14T10:11:33.000Z",
-      updatedAt: "2022-01-14T10:11:33.000Z",
-      CategoryId: 2,
-      FavoritedUsers: [],
-      isFavorited: false,
-      FavoriteCount: 0,
-    },
-  ],
-};
+import restaurantAPI from "../api/restaurants";
+import { Toast } from "../utils/helpers";
 
 export default {
   name: "RestaurantsTop",
@@ -245,23 +72,56 @@ export default {
   },
   mixins: [emptyImageFilter],
   methods: {
-    fetchTop() {
-      this.restaurantsTop = dummyData.restaurants;
-    },
-    addFavorite(restaurantId) {
-      const data = this.restaurantsTop.find(
-        (restaurant) => restaurant.id === restaurantId
-      );
-      if (data) {
-        data.isFavorited = true;
+    async fetchTop() {
+      try {
+        const { data } = await restaurantAPI.getRestaurantTop();
+        this.restaurantsTop = data.restaurants;
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "",
+        });
       }
     },
-    deleteFavorite(restaurantId) {
-      const data = this.restaurantsTop.find(
-        (restaurant) => restaurant.id === restaurantId
-      );
-      if (data) {
-        data.isFavorited = false;
+    async addFavorite(restaurantId) {
+      try {
+        const { data } = await restaurantAPI.addFavorite({ restaurantId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        const restaurant = this.restaurantsTop.find(
+          (restaurant) => restaurant.id === restaurantId
+        );
+        if (restaurant) {
+          restaurant.isFavorited = true;
+        }
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法加到最愛，請稍後再試",
+        });
+      }
+    },
+    async deleteFavorite(restaurantId) {
+      try {
+        const { data } = await restaurantAPI.deleteFavorite({ restaurantId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        const restaurant = this.restaurantsTop.find(
+          (restaurant) => restaurant.id === restaurantId
+        );
+        if (restaurant) {
+          restaurant.isFavorited = false;
+        }
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法移除最愛，請稍後再試",
+        });
       }
     },
   },

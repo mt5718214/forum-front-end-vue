@@ -2,9 +2,7 @@
   <div class="container py-5">
     <form class="w-100" @submit.prevent.stop="handleSubmit">
       <div class="text-center mb-4">
-        <h1 class="h3 mb-3 font-weight-normal">
-          Sign Up
-        </h1>
+        <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
       </div>
 
       <div class="form-label-group mb-2">
@@ -19,7 +17,7 @@
           autocomplete="username"
           required
           autofocus
-        >
+        />
       </div>
 
       <div class="form-label-group mb-2">
@@ -33,7 +31,7 @@
           placeholder="email"
           autocomplete="email"
           required
-        >
+        />
       </div>
 
       <div class="form-label-group mb-3">
@@ -47,7 +45,7 @@
           placeholder="Password"
           autocomplete="new-password"
           required
-        >
+        />
       </div>
 
       <div class="form-label-group mb-3">
@@ -61,53 +59,86 @@
           placeholder="Password"
           autocomplete="new-password"
           required
-        >
+        />
       </div>
 
       <button
         class="btn btn-lg btn-primary btn-block mb-3"
         type="submit"
+        :disabled="isProcessing"
       >
         Submit
       </button>
 
       <div class="text-center mb-3">
         <p>
-          <router-link to="/signin">
-            Sign In
-          </router-link>
+          <router-link to="/signin"> Sign In </router-link>
         </p>
       </div>
 
-      <p class="mt-5 mb-3 text-muted text-center">
-        &copy; 2021-2022
-      </p>
+      <p class="mt-5 mb-3 text-muted text-center">&copy; 2021-2022</p>
     </form>
   </div>
 </template>
 
 <script>
-export default {
-    data() {
-        return {
-            name: '',
-            email: '',
-            password: '',
-            passwordCheck: ''
-        }
-    },
-    methods: {
-        handleSubmit() {
-            const data = JSON.stringify({
-                name: this.name,
-                email: this.email,
-                password: this.password,
-                passwordCheck: this.passwordCheck
-            })
+import authorizationAPI from "../api/authorization";
+import { Toast } from "../utils/helpers";
 
-            // TODO: 向後端驗證使用者登入資訊是否合法
-            console.log('data', data)
+export default {
+  data() {
+    return {
+      name: "",
+      email: "",
+      password: "",
+      passwordCheck: "",
+      isProcessing: false,
+    };
+  },
+  methods: {
+    async handleSubmit() {
+      try {
+        if (!this.name || !this.email || !this.password) {
+          Toast.fire({
+            icon: "warning",
+            title: "欄位不可為空",
+          });
+          return;
         }
-    }
-}
+        if (this.password !== this.passwordCheck) {
+          Toast.fire({
+            icon: "warning",
+            title: "密碼與二次密碼不相符",
+          });
+          this.password = "";
+          this.passwordCheck = "";
+          return;
+        }
+        this.isProcessing = true;
+
+        const { data } = await authorizationAPI.signUp({
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          passwordCheck: this.passwordCheck,
+        });
+
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        this.$router.push({ name: "sign-in" });
+      } catch (error) {
+        this.isProcessing = false;
+        this.email = "";
+        this.password = "";
+        this.passwordCheck = "";
+        Toast.fire({
+          icon: "error",
+          title: error,
+        });
+      }
+    },
+  },
+};
 </script>

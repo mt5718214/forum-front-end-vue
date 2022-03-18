@@ -88,6 +88,9 @@ export default {
         }
         localStorage.setItem("token", token);
 
+        // 將資料傳到vuex中
+        this.$store.commit("setCurrentUser", res.data.user);
+
         // 登入成功後轉址
         this.$router.push("/restaurants");
       } catch (error) {

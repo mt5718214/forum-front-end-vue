@@ -2,56 +2,57 @@
   <form @submit.stop.prevent="handleSubmit">
     <div class="form-group mb-4">
       <label for="text">留下評論：</label>
-      <textarea
-        v-model="text"
-        class="form-control"
-        rows="3"
-        name="text"
-      />
+      <textarea v-model="text" class="form-control" rows="3" name="text" />
     </div>
     <div class="d-flex align-items-center justify-content-between">
-      <button
-        type="button"
-        class="btn btn-link"
-        @click="$router.back()"
-      >回上一頁</button>
-      <button
-        type="submit"
-        class="btn btn-primary mr-0"
-      >
-        Submit
+      <button type="button" class="btn btn-link" @click="$router.back()">
+        回上一頁
       </button>
+      <button type="submit" class="btn btn-primary mr-0">Submit</button>
     </div>
   </form>
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid"
+import userAPI from "../api/users";
+import { Toast } from "../utils/helpers";
 
 export default {
-    name: 'CreateComment',
-    props: {
-        restaurantId: {
-            type: Number,
-            required: true
-        }
+  name: "CreateComment",
+  props: {
+    restaurantId: {
+      type: Number,
+      required: true,
     },
-    data() {
-        return {
-            text: ''
+  },
+  data() {
+    return {
+      text: "",
+    };
+  },
+  methods: {
+    async handleSubmit() {
+      try {
+        const { data } = await userAPI.addComments({
+          restaurantId: this.restaurantId,
+          text: this.text,
+        });
+        if (data.status !== "success") {
+          throw new Error(data.message);
         }
+        this.$emit("after-create-comment", {
+          id: data.commentId,
+          restaurant: this.restaurantId,
+          text: this.text,
+        });
+        this.text = "";
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法新增評論, 請稍後再試",
+        });
+      }
     },
-    methods: {
-        handleSubmit() {
-            // TODO 透過API新增一筆comment
-
-            this.$emit('after-create-comment', {
-                id: uuidv4(),   // 未串接API 暫用隨機id
-                restaurant: this.restaurantId,
-                text: this.text
-            })
-            this.text = ''
-        }
-    }
-}
+  },
+};
 </script>

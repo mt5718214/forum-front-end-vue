@@ -1,20 +1,19 @@
 <template>
   <div>
-    <h2 class="my-4">
-      所有評論：
-    </h2>
+    <h2 class="my-4">所有評論：</h2>
 
     <div v-for="comment in restaurantComments" :key="comment.id">
       <blockquote class="blockquote mb-0">
         <button
           type="button"
           class="btn btn-danger float-right"
+          v-if="currentUser.isAdmin"
           @click.stop.prevent="handleDeleteButtonClick(comment.id)"
         >
           Delete
         </button>
         <h3>
-          <router-link :to="{ name: 'user', params: { id: comment.UserId }}">
+          <router-link :to="{ name: 'user', params: { id: comment.UserId } }">
             {{ comment.User.name }}
           </router-link>
         </h3>
@@ -23,44 +22,43 @@
           {{ comment.createdAt | fromNow }}
         </footer>
       </blockquote>
-      <hr>
+      <hr />
     </div>
   </div>
 </template>
 
 <script>
-import { fromNowFilter } from '../utils/mixins'
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: '管理者',
-    email: 'root@example.com',
-    image: 'https://i.pravatar.cc/300',
-    isAdmin: true
-  },
-  isAuthenticated: true
-}
+import { fromNowFilter } from "../utils/mixins";
+import userAPI from "../api/users";
+import { mapState } from "vuex";
+import { Toast } from "../utils/helpers";
+
 export default {
-    mixins: [fromNowFilter],
-    props: {
-        restaurantComments: {
-            type: Array,
-            required: true
-        }
+  mixins: [fromNowFilter],
+  props: {
+    restaurantComments: {
+      type: Array,
+      required: true,
     },
-    data() {
-        return {
-            currentUser: dummyUser.currentUser
+  },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
+  methods: {
+    async handleDeleteButtonClick(commentId) {
+      try {
+        const { data } = await userAPI.deleteComments({ commentId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
         }
-    },
-    methods: {
-      handleDeleteButtonClick(commentId) {
-        console.log('handleDeleteButtonClick', commentId)
-
-        // TODO 透過 API 刪除該筆comment
-
-        this.$emit('after-delete-comment', commentId)
+        this.$emit("after-delete-comment", commentId);
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法刪除評論, 請稍後再試",
+        });
       }
-    }
-}
+    },
+  },
+};
 </script>

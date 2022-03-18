@@ -88,14 +88,13 @@ export default {
       }
     },
     afterDeleteComment(commentId) {
-      console.log("afterDeleteComment", commentId);
-
       this.restaurantComments = this.restaurantComments.filter(
         (comment) => comment.id !== commentId
       );
     },
     afterCreateComment(payload) {
       const { id, restaurantId, text } = payload;
+      this.fetchRestaurant(restaurantId);
       this.restaurantComments.push({
         id,
         RestaurantId: restaurantId,

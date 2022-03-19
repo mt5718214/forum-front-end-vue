@@ -36,5 +36,12 @@ export default {
       comments: this.initialComments,
     };
   },
+  watch: {
+    initialComments(newValue) {
+      this.comments = {
+        ...newValue,
+      };
+    },
+  },
 };
 </script>

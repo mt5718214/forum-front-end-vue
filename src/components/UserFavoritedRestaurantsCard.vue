@@ -36,5 +36,12 @@ export default {
       favoritedRestaurantsArray: this.favoritedRestaurants,
     };
   },
+  watch: {
+    favoritedRestaurants(newValue) {
+      this.favoritedRestaurantsArray = {
+        ...newValue,
+      };
+    },
+  },
 };
 </script>

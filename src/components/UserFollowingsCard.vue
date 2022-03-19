@@ -36,5 +36,12 @@ export default {
       followings: this.initialFollowings,
     };
   },
+  watch: {
+    initialFollowings(newValue) {
+      this.followings = {
+        ...newValue,
+      };
+    },
+  },
 };
 </script>

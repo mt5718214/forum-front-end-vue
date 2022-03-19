@@ -36,5 +36,12 @@ export default {
       followers: this.initialFollowers,
     };
   },
+  watch: {
+    initialFollowers(newValue) {
+      this.followers = {
+        ...newValue,
+      };
+    },
+  },
 };
 </script>

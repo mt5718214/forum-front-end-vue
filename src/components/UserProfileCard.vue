@@ -29,7 +29,7 @@
             <button
               type="submit"
               class="btn btn-danger"
-              @click="deleteFollow"
+              @click="deleteFollow(user.id)"
               v-if="user.isFollowed"
             >
               取消追蹤
@@ -37,7 +37,7 @@
             <button
               type="submit"
               class="btn btn-primary"
-              @click="addFollow"
+              @click="addFollow(user.id)"
               v-else
             >
               追蹤
@@ -60,20 +60,8 @@
 
 <script>
 import { emptyImageFilter } from "../utils/mixins";
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "test",
-    email: "test@1234",
-    image: "",
-    isAdmin: false,
-    commentsLength: 0,
-    favoritedRestaurantsLength: 0,
-    followersLength: 0,
-    followingsLength: 0,
-    isFollowed: false,
-  },
-};
+import userAPI from "../api/users";
+import { Toast } from "../utils/helpers";
 
 export default {
   name: "userProfileCard",
@@ -82,24 +70,54 @@ export default {
       type: Object,
       required: true,
     },
+    currentUser: {
+      type: Object,
+      required: true,
+    },
   },
   mixins: [emptyImageFilter],
   data() {
     return {
       user: { ...this.initialUser },
-      currentUser: {},
     };
   },
   methods: {
-    addFollow() {
-      this.user.isFollowed = true;
+    async addFollow(userId) {
+      try {
+        const { data } = await userAPI.addFollowing({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.user.isFollowed = true;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法加入追蹤, 請稍後再試",
+        });
+      }
     },
-    deleteFollow() {
-      this.user.isFollowed = false;
+    async deleteFollow(userId) {
+      try {
+        const { data } = await userAPI.deleteFollowing({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.user.isFollowed = false;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法移除追蹤, 請稍後再試",
+        });
+      }
     },
   },
-  created() {
-    this.currentUser = dummyUser.currentUser;
+  watch: {
+    initialUser(newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue,
+      };
+    },
   },
 };
 </script>

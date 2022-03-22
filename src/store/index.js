@@ -14,6 +14,7 @@ export default new Vuex.Store({
       isAdmin: false,
     },
     isAuthenticated: false,
+    token: ""
   },
   getters: {
   },
@@ -26,6 +27,13 @@ export default new Vuex.Store({
       }
 
       state.isAuthenticated = true
+      state.token = localStorage.getItem('token')
+    },
+    revokeAuthentication(state) {
+      state.currentUser = {}
+      state.isAuthenticated = false
+      state.token = ""
+      localStorage.removeItem('token')
     }
   },
   // 使用dispatch 發動 actions
@@ -34,8 +42,11 @@ export default new Vuex.Store({
       try {
         const { data } = await userAPI.getCurrentUser()
         this.commit('setCurrentUser', data)
+        return true
       } catch (error) {
         console.error(error.message)
+        this.commit('revokeAuthentication')
+        return false
       }
     }
   },

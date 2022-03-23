@@ -15,8 +15,11 @@
         />
       </div>
 
+      <div v-if="restaurants.length < 1" class="ml-3">此類別目前無餐廳資料</div>
+
       <!-- 分頁標籤 -->
       <RestaurantsPagination
+        v-if="restaurants.length"
         :categoryId="categoryId"
         :currentPage="currentPage"
         :nextPage="nextPage"

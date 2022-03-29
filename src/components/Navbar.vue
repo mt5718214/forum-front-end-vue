@@ -16,6 +16,11 @@
 
     <div id="navbarSupportedContent" class="navbar-collapse collapse">
       <div class="ml-auto d-flex align-items-center">
+        <!-- chat -->
+        <router-link v-if="isAuthenticated" to="/chat" class="text-white mr-3"
+          >聊天室</router-link
+        >
+
         <!-- is user is admin -->
         <router-link
           v-if="currentUser.isAdmin"

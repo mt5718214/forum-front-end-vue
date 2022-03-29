@@ -14,7 +14,8 @@ export default new Vuex.Store({
       isAdmin: false,
     },
     isAuthenticated: false,
-    token: ""
+    token: "",
+    onlineUsers: []
   },
   getters: {
   },
@@ -34,6 +35,15 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       state.token = ""
       localStorage.removeItem('token')
+    },
+    addOnlineUsers(state, data) {
+      const { newUser, onlineUsers } = data
+      if (!state.onlineUsers.find(oldUser => oldUser.id === newUser.id)) {
+        state.onlineUsers = onlineUsers
+      }
+    },
+    removeOnlineUsers(state, user) {
+      state.onlineUsers = state.onlineUsers.filter(oldUser => oldUser.id !== user.id)
     }
   },
   // 使用dispatch 發動 actions

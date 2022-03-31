@@ -7,7 +7,7 @@ import './assets/application.css'
 
 Vue.config.productionTip = false
 
-const socket = io('http://localhost:3000', {
+const socket = io('https://fathomless-retreat-52726.herokuapp.com', {
   withCredentials: true,
   extraHeaders: {
     'my-custom-header': 'my-custom-header'

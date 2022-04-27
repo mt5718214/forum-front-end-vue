@@ -1,6 +1,7 @@
 <template>
   <div class="container py-5">
     <form @submit.stop.prevent="handleSubmit">
+      <legend>Info</legend>
       <div class="form-group">
         <label for="name">Name</label>
         <input
@@ -33,6 +34,20 @@
         />
       </div>
 
+      <legend>Notification</legend>
+      <div class="list">
+        <div class="list-item">
+          <i class="bi bi-envelope-check-fill"></i>
+          <input
+            type="checkbox"
+            id="mailNotification"
+            name="mailNotification"
+            v-model="user.mailNotification"
+          />
+          <label for="mailNotification">Mail Notification</label>
+        </div>
+      </div>
+
       <button type="submit" class="btn btn-primary" :disabled="isProcessing">
         Submit
       </button>
@@ -52,6 +67,7 @@ export default {
       user: {
         name: "test",
         image: "",
+        mailNotification: true,
       },
       isProcessing: false,
     };
@@ -119,3 +135,80 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.list-item {
+  width: 300px;
+  height: 50px;
+  background: #fff;
+  padding: 12px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+.list-item input[type="checkbox"] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+.list-item input[type="checkbox"] + label {
+  position: relative;
+  flex: 1;
+}
+.list-item input[type="checkbox"] + label::before {
+  content: "";
+  display: inline-block;
+  box-sizing: border-box;
+  width: 54px;
+  height: 30px;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 0 gray inset;
+  transition: all 0.25s ease-in-out 0s;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.list-item input[type="checkbox"] + label::after {
+  content: "";
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  border: 1px solid #ddd;
+  background-color: white;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease-in-out 0s;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.list-item input[type="checkbox"]:checked + label::before {
+  border: 1px solid rgb(179, 32, 32);
+  box-shadow: 0 0 100px rgb(179, 32, 32) inset;
+}
+.list-item input[type="checkbox"]:checked + label::after {
+  right: 0;
+  border: 1px solid limegreen;
+}
+.list-item i {
+  font-size: 16px;
+  margin-right: 12px;
+  padding: 0.3em;
+  background: rgb(179, 32, 32);
+  color: white;
+  border-radius: 6px;
+}
+
+body {
+  background: #eee;
+  font-family: Helvetica;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+</style>

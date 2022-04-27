@@ -12,6 +12,7 @@ export default new Vuex.Store({
       email: "",
       image: "",
       isAdmin: false,
+      mailNotification: true,
     },
     isAuthenticated: false,
     token: "",
